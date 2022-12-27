@@ -36,6 +36,6 @@ class multiPageKeyboardMaker():
                 InlineKeyboardButton(text="Далее", callback_data="next") )
         if position & multiPageKeyboardMaker.position.DONE:
             page.row( 
-                InlineKeyboardButton(text="Готово", callback_data="done"),)
+                InlineKeyboardButton(text="Готово", callback_data="next"),)
         return page
 

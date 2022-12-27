@@ -24,10 +24,7 @@ class acceptingTextInput(stateInterface):
         return self
 
     async def switch(self, predicate=None):
-        try:
-            return await self.go_next()
-        except:
-            return await self.done()
+        return await self.go_next()
     
     # ---- INTERFACE SPECIFIC TO THIS STATE
 

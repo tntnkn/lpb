@@ -68,17 +68,17 @@ conditions = {
         "select"        : selectTypes.multiChoise,
         "description"   : c.annexes,
         "choises"       : {
-            "annex_protocol_copy"     : {
+            "protocol_copy"     : {
             },
-            "annex_comission_decision" : {
+            "comission_decision" : {
             },
-            "annex_characteristics"       : {
+            "characteristics"       : {
             },
-            "annex_bio"     : {
+            "bio"     : {
             },
-            "annex_comissariat_response" : {
+            "comissariat_response" : {
             },
-            "annex_summon_copy"       : {
+            "summon_copy"       : {
             },
         }
     },
@@ -134,37 +134,37 @@ document_parts = {
                 'module_no_motivation',
             ]
     },
-    "annex_protocol_copy"     : {
+    "protocol_copy"     : {
         "description"   : c.protocol_copy,
         "tags"          : [
                 'annex_protocol_copy',
             ]
     },
-    "annex_comission_decision"     : {
+    "comission_decision"     : {
         "description"   : c.comission_decision,
         "tags"          : [
                 'annex_comission_decision',
             ]
     },
-    "annex_characteristics"     : {
+    "characteristics"     : {
         "description"   : c.characteristics,
         "tags"          : [
                 'annex_characteristics',
             ]
     },
-    "annex_bio"     : {
+    "bio"     : {
         "description"   : c.bio,
         "tags"          : [
                 'annex_bio',
             ]
     },
-    "annex_comissariat_response"     : {
+    "comissariat_response"     : {
         "description"   : c.comissariat_response,
         "tags"          : [
                 'annex_comissariat_response',
             ]
     },
-    "annex_summon_copy"     : {
+    "summon_copy"     : {
         "description"   : c.summon_copy,
         "tags"          : [
                 'annex_summon_copy',

@@ -5,6 +5,7 @@ class userSession():
         self.current_state  = None   
         self.user_info      = userInfo()
         self.user_condition = userCondition()
+        self.user_document  = userDocument()
         self.message        = None
         self.ms_text        = None
         self.cb_query       = None
@@ -69,7 +70,15 @@ class userCondition():
         self.yes_summoned_after_hearing             = False
         self.no_summoned_after_hearing              = False
         self.yes_summoned_plea_ignored              = False
-       
+        self.protocol_copy                          = False
+        self.comission_decision                     = False
+        self.characteristics                        = False
+        self.bio                                    = False
+        self.comissariat_response                   = False
+        self.summon_copy                            = False
+
+class userDocument():
+    def __init__(self):
         self.fact_hearing_happened                  = False
         self.fact_witnesses_not_heard               = False
         self.fact_no_quorum                         = False

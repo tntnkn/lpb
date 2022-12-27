@@ -80,6 +80,7 @@ class gettingUserInfoFormInput(globalState):
 class gettingUserCondition(globalState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
+        self.user_document = context.user_document
         self.user_condition= context.user_condition
         self.user_info     = context.user_info
         self.default_state = userConditionFirstState(self)
@@ -110,7 +111,7 @@ class creatingSuit(globalState):
         f_name = docgen.makeDocument(
                 self.context.from_id, 
                 self.context.user_info,
-                self.context.user_condition)
+                self.context.user_document)
         await self.finish()
         self.next = self.next(self.context, self)
         return await self.next.go(f_name, *args, **kwargs)
