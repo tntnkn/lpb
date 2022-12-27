@@ -1,6 +1,7 @@
+import static.commands as c
 
-court           = "Информация о суде" 
-court_name      = "Название суда (напиши /guide_court)"
+court           = f"Информация о суде (жми {c.court} для помощи)" 
+court_name      = "Название суда"
 
 user            = "Информация о пользователе"
 user_name       = "ФИО пользователя"
@@ -15,9 +16,9 @@ summon_date     = "Дата повестки"
 ags_plea_date   = "Дата заявления на АГС"
 denial_detail   = "Номер и дата отказа в АГС"
 
-hearings        = "Информация о заседаниях"
+hearings              = "Информация о заседаниях"
 denial_hearing_date   = "Дата заседания, на котором был отказ"
-witnesses       = "Имена свидетелей"
+witnesses             = "Имена свидетелей"
 comission_summon_date = "Дата вынесения комиссией решения о призыве"
 
 comissar        = "Информация о комиссаре"
@@ -28,8 +29,8 @@ comissariat         = "Информация о комиссариате"
 comissariat_region  = "Регион комиссариата"
 comissariat_address = "Адрес комиссариата"
 
-comission           = "Информация о комиссии"
-comission_region    = "Регион комиссии (напиши /guide_comission)"
+comission           = f"Информация о комиссии (жми {c.comission} для помощи)"
+comission_region    = "Регион комиссии"
 comission_address   = "Адрес комиссии"
 
 
@@ -43,11 +44,11 @@ class conditions():
     not_summoned_but_deadline_missed        = \
             "Не вызвали, но сказали о пропуске сроков"
     comission_violations                    = \
-            "Выберете нарушения со стороны комиссии, если они были"
+            f"Выберете нарушения со стороны комиссии, если они были\n(жми {c.quorum} для помощи)"
     witnesses_not_heard                     = \
             "Моих свидетелей отказались выслушать"
     no_quorum                               = \
-            "Не было кворума (напиши /guide_quorum)"
+            "Не было кворума"
     less_voices                             = \
             "'За' голосовало меньше половины присутствующих"
     comission_reason_for_rejection          = \
@@ -57,7 +58,7 @@ class conditions():
     rejection_reason_deadline_missed        = \
             "Сказали, что срок пропущен"
     rejection_reason_no_reason              = \
-            "Мотивация отсутствует"
+            "Мотивация в решении отсутствует"
     annexes                                 = \
             "Какие документы есть на руках?"
     protocol_copy                           = \
