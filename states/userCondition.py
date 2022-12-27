@@ -198,6 +198,9 @@ class askingForWitnessesNames(acceptingUserInfoSkipping):
         self.next           = insertingComissionViolationsDocParts
         self.data_prompt    = p.info["hearings"]["subtypes"]["witnesses"]["prompt"] 
 
+    async def doSaveInput(self, thing):
+        self.context.user_info.witnesses = thing
+
 class insertingComissionViolationsDocParts(insertDocPartsMultiChoiseState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
@@ -320,6 +323,9 @@ class askingSummonDate(acceptingUserInfoSkipping):
         super().__init__(context, prev)
         self.next           = askingDocumentsForAnnexes
         self.data_prompt    = p.info["hearings"]["subtypes"]["comission_summon_date"]["prompt"] 
+
+    async def doSaveInput(self, thing):
+        self.context.user_info.comission_summon_date = thing
 
 class askingDocumentsForAnnexes(acceptingMultiChoiseKeyboardInput):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
