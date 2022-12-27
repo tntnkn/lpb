@@ -13,8 +13,8 @@ class sessionManager():
         if sessionManager.instance is not None:
             return sessionManager.instance
         self.sessions = dict()
-        self.DANGLING_SESSIONS_CHECKUP_STRIDE   = 10 * 60
-        self.MAX_ALLOWED_DANGLING_TIME          = 5 * 60
+        self.DANGLING_SESSIONS_CHECKUP_STRIDE   = 20 * 60
+        self.MAX_ALLOWED_DANGLING_TIME          = 60 * 60
 
     def get():
         if sessionManager.instance is None:
