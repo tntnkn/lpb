@@ -10,6 +10,7 @@ from utils import send_unsolicited_message
 import bot
 import os
 
+import logging
 
 sm = sessionManager.get()
 
@@ -48,16 +49,12 @@ class globalState(stateInterface):
         try:
             await self.current_state.done()
         except:
-            pass
+            logging.exception(self)
         self.current_state = self.default_state
         return self
 
     async def switch(self):
-        await self.finish()
-        try:
-            return await self.go_next()
-        except:
-            return await self.done()
+        return await self.go_next()
 
 
 class gettingUserInfo(globalState):
@@ -91,6 +88,7 @@ class gettingUserCondition(globalState):
         try:
             self.current_state = await self.current_state.go(smth, *args)
         except:
+            logging.exception("exception in gettingUserCondition.go()")
             await send_unsolicited_message(
                 self.context.from_id,
                 "Упс, видимо Вам сейчас надо нажать кнопку, а не написать!")
@@ -102,7 +100,6 @@ class gettingUserCondition(globalState):
 
 class creatingSuit(globalState):
     def __init__(self, context, prev=None):
-        print(creatingSuit)
         super().__init__(context, prev)
         self.next    = sendingSuitToUser 
 

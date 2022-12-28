@@ -3,6 +3,9 @@ import bot
 import services.sessionManager as sessionManager
 from services.loopManager import loopManager
 
+import logging
+logging.basicConfig(filename="log.txt", filemode="a")
+
 sm = sessionManager.get()
 
 
