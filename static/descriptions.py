@@ -20,6 +20,10 @@ hearings              = "Информация о заседаниях"
 denial_hearing_date   = "Дата заседания, на котором был отказ"
 witnesses             = "Имена свидетелей"
 comission_summon_date = "Дата вынесения комиссией решения о призыве"
+single_day_hearing_date = "Дата заседания призывной комиссии"
+single_day_summon_date  = "Дата призыва одним днём"
+single_day_diseases     = "Нерасмотренные заболевания"
+single_day_forcingly_delivered_date = "Дата принудительной доставки в военкомат"
 
 comissar        = "Информация о комиссаре"
 comissar_name   = "ФИО комиссара"
@@ -35,6 +39,24 @@ comission_address   = "Адрес комиссии"
 
 
 class conditions():
+    what_happened                           = \
+            "Что случилось?"
+    ags_rejected                            = \
+            "Отказали в агс"
+    single_day_summon                       = \
+            "Призвали одним днём"
+    single_day_delivery_method              = \
+            "Как оказались в военкомате?"
+    single_day_forcingly_delivered          = \
+            "Насильно привезли"
+    single_day_came_themselves              = \
+            "Пришёл сам"
+    single_day_asked_for_ags                = \
+            "Просили АГС?"
+    single_day_ags_asked                    = \
+            "Да"
+    single_day_ags_not_asked                = \
+            "Нет"
     comission_reaction_on_plea              = \
             "Какая была реакция комиссии на заявление?"
     plea_ignored                            = \

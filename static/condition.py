@@ -8,6 +8,16 @@ class selectTypes(Enum):
 
 
 conditions = {
+    "what_happened"     : {
+        "select"        : selectTypes.singleChoise,
+        "description"   : c.what_happened,
+        "choises"       : {
+            "ags_rejected"  : {
+            },
+            "single_day_summon" : {
+            },
+        },
+    },
     "comission_reaction_on_plea"     : {
         "select"        : selectTypes.singleChoise,
         "description"   : c.comission_reaction_on_plea,
@@ -82,9 +92,39 @@ conditions = {
             },
         }
     },
+    "single_day_delivery_method"     : {
+        "select"        : selectTypes.singleChoise,
+        "description"   : c.single_day_delivery_method,
+        "choises"       : {
+            "single_day_forcingly_delivered"     : {
+            },
+            "single_day_came_themselves"     : {
+            },
+        }
+    },
+    "single_day_asked_for_ags"     : {
+        "select"        : selectTypes.singleChoise,
+        "description"   : c.single_day_asked_for_ags,
+        "choises"       : {
+            "single_day_ags_asked"     : {
+            },
+            "single_day_ags_not_asked"     : {
+            },
+        }
+    },
 }
 
 document_parts = {
+    "ags_rejected"  : {
+        "description"   : c.ags_rejected,
+        "tags"          : [
+            ]
+    },
+    "single_day_summon"  : {
+        "description"   : c.single_day_summon,
+        "tags"          : [
+            ]
+    },
     "summoned_to_the_hearing_and_rejected"  : {
         "description"   : c.summoned_to_the_hearing_and_rejected,
         "tags"          : [
@@ -215,5 +255,31 @@ document_parts = {
             ]
     },
 
+    "single_day_forcingly_delivered"  : {
+        "description"   : c.single_day_forcingly_delivered,
+        "tags"          : [
+                'fact_single_day_forcingly_delivered',
+            ]
+    },
+    "single_day_came_themselves"  : {
+        "description"   : c.single_day_came_themselves,
+        "tags"          : [
+            ]
+    },
+
+    "single_day_ags_asked"  : {
+        "description"   : c.single_day_ags_asked,
+        "tags"          : [
+                'plea_single_day_asked_for_ags',
+                'fact_single_day_asked_for_ags',
+                'module_single_day_asked_for_ags',
+                'block_single_day_asked_for_ags',
+            ]
+    },
+    "single_day_ags_not_asked"  : {
+        "description"   : c.single_day_ags_not_asked,
+        "tags"          : [
+            ]
+    },
 }
 

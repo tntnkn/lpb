@@ -16,7 +16,7 @@ sm = sessionManager.get()
 
 userInfoFirstState      = userInfo.askingName
 checkingInfoFirstState  = userInfoCheckup.courtCheckup
-userConditionFirstState = userCondition.comissionReactionOnPlea
+userConditionFirstState = userCondition.startUserCondition
 
 
 class noParticularActionState(stateInterface):
@@ -95,6 +95,7 @@ class gettingUserCondition(globalState):
         if self.current_state is None:
             print("IS NONE!!!")
             print( vars(self.context.user_condition) )
+            print( vars(self.context.user_document) )
             return await self.switch()
         return self
 
@@ -108,6 +109,7 @@ class creatingSuit(globalState):
         f_name = docgen.makeDocument(
                 self.context.from_id, 
                 self.context.user_info,
+                self.context.user_condition,
                 self.context.user_document)
         await self.finish()
         self.next = self.next(self.context, self)

@@ -66,6 +66,26 @@ info = {
                 "description"   : d.denial_hearing_date,
                 "tag"           : "denial_hearing_date",
             },
+            "single_day_hearing_date": {
+                "prompt"        : p.single_day_hearing_date,
+                "description"   : d.single_day_hearing_date,
+                "tag"           : "single_day_hearing_date",
+            },
+            "single_day_summon_date": {
+                "prompt"        : p.single_day_summon_date,
+                "description"   : d.single_day_summon_date,
+                "tag"           : "single_day_summon_date",
+            },
+            "single_day_diseases": {
+                "prompt"        : p.single_day_diseases,
+                "description"   : d.single_day_diseases,
+                "tag"           : "single_day_diseases",
+            },
+            "single_day_forcingly_delivered_date": {
+                "prompt"        : p.single_day_forcingly_delivered_date,
+                "description"   : d.single_day_forcingly_delivered_date,
+                "tag"           : "single_day_forcingly_delivered_date",
+            },
             "witnesses": {
                 "prompt"        : p.witnesses,
                 "description"   : d.witnesses,

@@ -122,7 +122,114 @@ class acceptingUserInfoSkipping(acceptingUserInfo):
 # ===== Concrete classes
 
 
-# --- Start
+# ----- Start
+
+class startUserCondition(gettingUserConditions):
+    def __init__(self, context, prev=None, keyboard_mes_id=None):
+        super().__init__(context, prev, keyboard_mes_id)
+        self.cond_type  = "what_happened"
+        self.next       = None 
+        self.nexts      = {
+          "single_day_summon"                   : singleDaySummon,
+          "ags_rejected"                        : agsRejected,
+        }
+
+
+# ----- single_day_summon
+
+class singleDaySummon(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "single_day_summon"
+        self.next           = askingSingleDayHearingDate
+
+class askingSingleDayHearingDate(acceptingUserInfoSkipping):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.next           = askingSingleDateSummonDate
+        self.data_prompt    = p.info["hearings"]["subtypes"]["single_day_hearing_date"]["prompt"] 
+
+    async def doSaveInput(self, thing):
+        self.context.user_info.single_day_hearing_date = thing
+
+class askingSingleDateSummonDate(acceptingUserInfoSkipping):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.next           = askingSingleDayDiseases
+        self.data_prompt    = p.info["hearings"]["subtypes"]["single_day_summon_date"]["prompt"] 
+
+    async def doSaveInput(self, thing):
+        self.context.user_info.single_day_summon_date = thing
+
+class askingSingleDayDiseases(acceptingUserInfoSkipping):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.next           = askingSingleDayDeliveryMethod
+        self.data_prompt    = p.info["hearings"]["subtypes"]["single_day_diseases"]["prompt"] 
+
+    async def doSaveInput(self, thing):
+        self.context.user_info.single_day_diseases = thing
+
+class askingSingleDayDeliveryMethod(gettingUserConditions):
+    def __init__(self, context, prev=None, keyboard_mes_id=None):
+        super().__init__(context, prev, keyboard_mes_id)
+        self.cond_type  = "single_day_delivery_method"
+        self.next       = None 
+        self.nexts      = {
+          "single_day_forcingly_delivered": forcinglyDelivered,
+          "single_day_came_themselves"    : cameThemSelves,
+        }
+
+class forcinglyDelivered(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "single_day_forcingly_delivered"
+        self.next           = askingForcinglyDeliveryDate
+
+class cameThemSelves(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "single_day_came_themselves"
+        self.next           = singleDayAGS
+
+class askingForcinglyDeliveryDate(acceptingUserInfoSkipping):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.next           = singleDayAGS
+        self.data_prompt    = p.info["hearings"]["subtypes"]["single_day_forcingly_delivered_date"]["prompt"] 
+
+    async def doSaveInput(self, thing):
+        self.context.user_info.single_day_forcingly_delivered_date = thing
+
+class singleDayAGS(gettingUserConditions):
+    def __init__(self, context, prev=None, keyboard_mes_id=None):
+        super().__init__(context, prev, keyboard_mes_id)
+        self.cond_type  = "single_day_asked_for_ags"
+        self.next       = None 
+        self.nexts      = {
+          "single_day_ags_asked"        : agsAsked,
+          "single_day_ags_not_asked"    : agsNotAsked,
+        }
+
+class agsAsked(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "single_day_ags_asked"
+        self.next           = endUserConditions
+
+class agsNotAsked(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "single_day_ags_not_asked"
+        self.next           = endUserConditions
+
+# ----- ags_rejected
+
+class agsRejected(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "ags_rejected"
+        self.next           = comissionReactionOnPlea
 
 class comissionReactionOnPlea(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -134,7 +241,6 @@ class comissionReactionOnPlea(gettingUserConditions):
           "plea_ignored"                        : pleaIgnored,
           "not_summoned_but_deadline_missed"    : notSummonedButDeadlinesMissed,
         }
-
 
 # --- summoned_to_the_hearing_and_rejected
 

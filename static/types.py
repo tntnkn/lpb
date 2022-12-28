@@ -55,9 +55,24 @@ class userInfo():
             i["comission"]["subtypes"]["region"]["description"]
         self.comission_address      = \
             i["comission"]["subtypes"]["address"]["description"]
+        self.single_day_hearing_date = \
+            i["hearings"]["subtypes"]["single_day_hearing_date"]["description"]
+        self.single_day_summon_date = \
+            i["hearings"]["subtypes"]["single_day_summon_date"]["description"]
+        self.single_day_diseases = \
+            i["hearings"]["subtypes"]["single_day_diseases"]["description"]
+        self.single_day_forcingly_delivered_date = \
+            i["hearings"]["subtypes"]["single_day_forcingly_delivered_date"]["description"]
+
 
 class userCondition():
     def __init__(self):
+        self.ags_rejected                           = False
+        self.single_day_summon                      = False
+        self.single_day_forcingly_delivered         = False
+        self.single_day_came_themselves             = False
+        self.single_day_ags_asked                   = False
+        self.single_day_ags_not_asked               = False
         self.summoned_to_the_hearing_and_rejected   = False
         self.plea_ignored                           = False
         self.not_summoned_but_deadline_missed       = False
@@ -111,4 +126,9 @@ class userDocument():
         self.annex_summon_copy                      = False
         self.title_inaction                         = False
         self.party_inaction                         = False
+        self.fact_single_day_forcingly_delivered    = False
+        self.fact_single_day_asked_for_ags          = False
+        self.block_single_day_asked_for_ags         = False
+        self.module_single_day_asked_for_ags        = False
+        self.plea_single_day_asked_for_ags          = False
 
