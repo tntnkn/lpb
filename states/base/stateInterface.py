@@ -62,9 +62,9 @@ class stateInterface():
     async def go_next(self):
         # switch to next and go()
         # if new next, then become it's new prev.
+        await self.finish()
         if self.next is None:
             return await self.done()
-        await self.finish()
         try:
             return await self.next.go()
         except:
