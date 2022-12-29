@@ -1,6 +1,8 @@
 from .stateInterface import stateInterface
 import bot
 
+from aiogram.types import ParseMode
+
 class acceptingTextInput(stateInterface):
     def __init__(self, context, prev=None, message_id=None):
         super().__init__(context, prev)
@@ -61,12 +63,14 @@ class acceptingTextInput(stateInterface):
     async def doPromptForData(self):
         return await bot.bot.send_message(
                 self.context.from_id, 
-                self.data_prompt) 
+                self.data_prompt,
+                parse_mode=ParseMode.HTML) 
 
     async def doPromptForCorrection(self):
         return await bot.bot.send_message(
                 self.context.user_id,
-                self.correction_prompt ) 
+                self.correction_prompt, 
+                parse_mode=ParseMode.HTML) 
 
     async def doCheckInput(self, inp):
         return False

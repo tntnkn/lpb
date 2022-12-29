@@ -50,7 +50,7 @@ class userCheckup(fillingUserInfoForm):
                  require_user_to_complete_page=True):
         super().__init__(context, prev, keyboard_mes_id, 
                          require_user_to_complete_page)
-        self.next       = documentsCheckup(context, self)
+        self.next       = comissariatCheckup(context, self)
         self.info_type  = "user"
         self.fields     = {
             "user_name"         : field(userInfo.askingName),
@@ -61,6 +61,7 @@ class userCheckup(fillingUserInfoForm):
             "user_email"        : field(userInfo.askingEmail),
         }
 
+# the next one is temporarily abandoned.
 class documentsCheckup(fillingUserInfoForm):
     def __init__(self, context, prev=None, keyboard_mes_id=None, 
                  require_user_to_complete_page=True):

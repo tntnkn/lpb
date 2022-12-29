@@ -74,6 +74,9 @@ class stateInterface():
     async def go_prev(self):
         # switch to prev and go()
         # the new prev know it's next itself!
+        print("IN PREV GO")
+        print(self)
+        print(self.prev)
         await self.finish()
         try:
             return await self.prev.go()

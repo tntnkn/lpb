@@ -3,6 +3,8 @@ from .stateInterface    import stateInterface
 from utils              import send_unsolicited_message
 import bot
 
+from aiogram.types import ParseMode
+
 
 class acceptingKeyboardInput(stateInterface):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -37,7 +39,8 @@ class acceptingKeyboardInput(stateInterface):
     async def presentKeyboard(self, page_descr, menu_page):
         await self.handleExistingKeyboard()
         ret = await bot.bot.send_message(
-            self.context.from_id, page_descr, reply_markup=menu_page)
+            self.context.from_id, page_descr, 
+            reply_markup=menu_page, parse_mode=ParseMode.HTML)
         self.keyboard_mes_id = ret["message_id"]
 
     async def handleExistingKeyboard(self):

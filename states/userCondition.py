@@ -1,7 +1,9 @@
-from .base import acceptingTextInput, acceptingWrappedKeyboardInput, stateInterface
+from .base import acceptingTextInput, acceptingWrappedKeyboardInput, stateInterface, justSendMessage
 from .userInfo import acceptingUserInfo
 from static.condition import conditions, document_parts
+from utils.messaging import send_unsolicited_message
 import static.phrases as p
+import static.descriptions as d
 
 import bot
 
@@ -89,6 +91,14 @@ class insertDocPartsState(stateInterface):
         parts_dict = vars( self.context.user_condition )
         for tag in tags:
             parts_dict[tag] = False
+
+    async def go_next(self):
+        await self.finish()
+        try:
+            return await self.next.go()
+        except:
+            self.next = self.next(self.context, self.prev)
+        return await self.next.go()
             
 class insertDocPartsMultiChoiseState(stateInterface):
     def __init__(self, context, prev=None):
@@ -115,16 +125,39 @@ class insertDocPartsMultiChoiseState(stateInterface):
             for tag in document_parts[choise]["tags"]:
                 doc_dict[tag] = False
 
+    async def go_next(self):
+        await self.finish()
+        try:
+            return await self.next.go()
+        except:
+            self.next = self.next(self.context, self.prev)
+        return await self.next.go()
+
 class acceptingUserInfoSkipping(acceptingUserInfo):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
+
+    async def go_next(self):
+        await self.finish()
+        try:
+            return await self.next.go()
+        except:
+            self.next = self.next(self.context, self.prev)
+        return await self.next.go()
+
 
 # ===== Concrete classes
 
 
 # ----- Start
 
-class startUserCondition(gettingUserConditions):
+class startUserCondition(justSendMessage):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.next       = askingWhatHappened
+        self.message    = d.pre_messages.pre_condition_message
+
+class askingWhatHappened(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
         super().__init__(context, prev, keyboard_mes_id)
         self.cond_type  = "what_happened"
@@ -155,11 +188,17 @@ class askingSingleDayHearingDate(acceptingUserInfoSkipping):
 class askingSingleDateSummonDate(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
-        self.next           = askingSingleDayDiseases
+        self.next           = preDiseaseMessage
         self.data_prompt    = p.info["hearings"]["subtypes"]["single_day_summon_date"]["prompt"] 
 
     async def doSaveInput(self, thing):
         self.context.user_info.single_day_summon_date = thing
+
+class preDiseaseMessage(justSendMessage):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.next       = askingSingleDayDiseases
+        self.message    = d.pre_messages.pre_diseases_message
 
 class askingSingleDayDiseases(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):
@@ -229,7 +268,16 @@ class agsRejected(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "ags_rejected"
+        self.next           = askingAGSPleaDate
+
+class askingAGSPleaDate(acceptingUserInfoSkipping):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
         self.next           = comissionReactionOnPlea
+        self.data_prompt    = p.info["documents"]["subtypes"]["ags_plea_date"]["prompt"] 
+
+    async def doSaveInput(self, thing):
+        self.context.user_info.ags_plea_date = thing
 
 class comissionReactionOnPlea(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -361,7 +409,7 @@ class noSummonedAfterHearing(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "no_summoned_after_hearing"
-        self.next           = askingDocumentsForAnnexes
+        self.next           = preAnnexesMessage
 
 class askingIfWasSummonedAfterIgnore(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -383,7 +431,7 @@ class noSummonedPleaIgnored(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "no_summoned_after_plead_ingored"
-        self.next           = askingDocumentsForAnnexes
+        self.next           = preAnnexesMessage
 
 class askingIfWasSummonedAfterMissedDeadlines(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -405,17 +453,23 @@ class noSummonedDeadlinesMisseded(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "no_summoned_after_missed_deadlines"
-        self.next           = askingDocumentsForAnnexes
+        self.next           = preAnnexesMessage
 
 
 class askingSummonDate(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
-        self.next           = askingDocumentsForAnnexes
+        self.next           = preAnnexesMessage
         self.data_prompt    = p.info["hearings"]["subtypes"]["comission_summon_date"]["prompt"] 
 
     async def doSaveInput(self, thing):
         self.context.user_info.comission_summon_date = thing
+
+class preAnnexesMessage(justSendMessage):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.next       = askingDocumentsForAnnexes
+        self.message    = d.pre_messages.pre_annexes_message
 
 class askingDocumentsForAnnexes(acceptingMultiChoiseKeyboardInput):
     def __init__(self, context, prev=None, keyboard_mes_id=None):

@@ -1,11 +1,12 @@
 from aiogram.types import InputFile
 
-from .base import stateInterface
+from .base import stateInterface, justSendMessage
 import states.userInfo              as userInfo
 import states.userInfoCheckup       as userInfoCheckup
 import states.userCondition         as userCondition
 import services.sessionManager      as sessionManager
 import services.docgen              as docgen
+import static.descriptions as d
 from utils import send_unsolicited_message
 import bot
 import os
@@ -113,8 +114,10 @@ class creatingSuit(globalState):
                 self.context.user_document)
         await self.finish()
         self.next = self.next(self.context, self)
+        await bot.bot.send_message(self.context.from_id,
+                d.pre_messages.pre_making_suit_message)
         return await self.next.go(f_name, *args, **kwargs)
-        
+
 class sendingSuitToUser(globalState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)

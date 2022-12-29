@@ -1,9 +1,12 @@
 from filters.user   import isPromtingForUserInfo, isFillingUserInfoForm, isSelectingUserConditionsOptions
 from states.general import gettingUserInfoFormInput, noParticularActionState
 from static.types   import userSession
+import static.commands as c
 import services.sessionManager as sessionManager
 import bot
-from static.guides  import guide_court, guide_quorum, guide_fee, guide_comission
+from static.guides  import guide_court, guide_how_to_sue, guide_quorum, guide_fee, guide_comission, guide_comissariat
+from static.misc    import help_command_text
+from aiogram.types import ParseMode
 
 sm = sessionManager.get()
 
@@ -12,19 +15,31 @@ sm = sessionManager.get()
 
 @bot.dp.message_handler(commands=['guide_court'])
 async def startCommandHandler(message: bot.types.Message):
-    resp = await message.reply(guide_court)
+    resp = await message.reply(guide_court, parse_mode=ParseMode.HTML)
+
+@bot.dp.message_handler(commands=['guide_how_to_sue'])
+async def startCommandHandler(message: bot.types.Message):
+    resp = await message.reply(guide_how_to_sue,parse_mode=ParseMode.HTML)
 
 @bot.dp.message_handler(commands=['guide_quorum'])
 async def startCommandHandler(message: bot.types.Message):
-    resp = await message.reply(guide_quorum)
+    resp = await message.reply(guide_quorum,parse_mode=ParseMode.HTML)
 
 @bot.dp.message_handler(commands=['guide_comission'])
 async def startCommandHandler(message: bot.types.Message):
-    resp = await message.reply(guide_comission)
+    resp = await message.reply(guide_comission,parse_mode=ParseMode.HTML)
+
+@bot.dp.message_handler(commands=['guide_comissariat'])
+async def startCommandHandler(message: bot.types.Message):
+    resp = await message.reply(guide_comissariat,parse_mode=ParseMode.HTML)
 
 @bot.dp.message_handler(commands=['guide_fee'])
 async def startCommandHandler(message: bot.types.Message):
-    resp = await message.reply(guide_fee)
+    resp = await message.reply(guide_fee,parse_mode=ParseMode.HTML)
+
+@bot.dp.message_handler(commands=['help'])
+async def startCommandHandler(message: bot.types.Message):
+    resp = await message.reply(help_command_text,parse_mode=ParseMode.HTML)
 
 @bot.dp.message_handler(commands=['start'])
 async def startCommandHandler(message: bot.types.Message):
