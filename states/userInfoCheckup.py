@@ -80,7 +80,7 @@ class comissariatCheckup(fillingUserInfoForm):
         self.next       = comissionCheckup(context, self)
         self.info_type  = "comissariat"
         self.fields     = {
-            "comissariat_region"   : field(userInfo.askingComissariatRegion),
+            "comissariat_name"     : field(userInfo.askingComissariatName),
             "comissariat_address"  : field(userInfo.askingComissariatAddress),
         }
 

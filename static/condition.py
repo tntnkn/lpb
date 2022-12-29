@@ -64,13 +64,23 @@ conditions = {
             },
         }
     },
-    "summoned_plea_ignored"     : {
+    "summoned_after_plea_ignored"     : {
         "select"        : selectTypes.singleChoise,
-        "description"   : c.summoned_plea_ignored,
+        "description"   : c.summoned_after_plea_ignored,
         "choises"       : {
-            "yes_summoned_plea_ignored"     : {
+            "yes_summoned_after_plea_ignored"     : {
             },
-            "no_summoned_after_hearing"     : {
+            "no_summoned_after_plead_ingored"     : {
+            },
+        }
+    },
+    "summoned_after_missed_deadlines"     : {
+        "select"        : selectTypes.singleChoise,
+        "description"   : c.summoned_after_missed_deadlines,
+        "choises"       : {
+            "yes_summoned_after_missed_deadlines"     : {
+            },
+            "no_summoned_after_missed_deadlines"     : {
             },
         }
     },
@@ -210,17 +220,47 @@ document_parts = {
                 'annex_summon_copy',
             ]
     },
+
     "yes_summoned_after_hearing"     : {
         "description"   : c.yes_summoned_after_hearing,
         "tags"          : [
             "plea_cancel_summon",
             "block_illegal_summon",
+            "fact_illegal_summon",
             ]
     },
     "no_summoned_after_hearing"     : {
         "description"   : c.no_summoned_after_hearing,
         "tags"          : [
-            "petition_forbid_summon"
+            ]
+    },
+    "yes_summoned_after_plea_ignored"     : {
+        "description"   : c.yes_summoned_after_plea_ignored,
+        "tags"          : [
+            "plea_cancel_summon",
+            "block_illegal_summon",
+            "block_cancel_illegal_decision",
+            "fact_illegal_summon",
+            ]
+    },
+    "no_summoned_after_plead_ingored"     : {
+        "description"   : c.no_summoned_after_plead_ingored,
+        "tags"          : [
+            "petition_forbid_summon",
+            ]
+    },
+    "yes_summoned_after_missed_deadlines"     : {
+        "description"   : c.yes_summoned_after_missed_deadlines,
+        "tags"          : [
+            "plea_cancel_summon",
+            "block_illegal_summon",
+            "fact_illegal_summon",
+            ]
+    },
+    "no_summoned_after_missed_deadlines"     : {
+        "description"   : c.no_summoned_after_missed_deadlines,
+        "tags"          : [
+            "petition_forbid_summon",
             ]
     },
 
@@ -231,15 +271,6 @@ document_parts = {
             "fact_incaction",
             "plea_incaction",
             "petition_provide_personal_case",
-            ]
-    },
-
-    "yes_summoned_plea_ignored"     : {
-        "description"   : c.yes_summoned_plea_ignored,
-        "tags"          : [
-            "plea_cancel_summon",
-            "block_illegal_summon",
-            "block_cancel_illegal_decision",
             ]
     },
 

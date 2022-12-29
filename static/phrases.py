@@ -116,10 +116,10 @@ info = {
     "comissariat": {
         "description"   : d.comissariat,
         "subtypes"      : {
-            "region": {
-                "prompt"        : p.comissariat_region,
-                "description"   : d.comissariat_region,
-                "tag"           : "comissariat_region",
+            "name": {
+                "prompt"        : p.comissariat_name,
+                "description"   : d.comissariat_name,
+                "tag"           : "comissariat_name",
             },
             "address": {
                 "prompt"        : p.comissariat_address,

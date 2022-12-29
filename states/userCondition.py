@@ -305,19 +305,19 @@ class insertNotBelieveRejDocParts(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "rejection_reason_not_believe"
-        self.next           = askingIfWasSummoned
+        self.next           = askingIfWasSummonedAfterHearing
 
 class insertDeadlineRejDocParts(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "rejection_reason_deadline_missed"
-        self.next           = askingIfWasSummoned
+        self.next           = askingIfWasSummonedAfterHearing
 
 class insertNoReasonRejDocParts(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "rejection_reason_no_reason"
-        self.next           = askingIfWasSummoned
+        self.next           = askingIfWasSummonedAfterHearing
 
 
 # --- not_summoned_but_deadline_missed
@@ -326,26 +326,8 @@ class notSummonedButDeadlinesMissed(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "not_summoned_but_deadline_missed"
-        self.next           = askingIfWasSummoned
-"""
-class askingComissariatRegion(acceptingUserInfoSkipping):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.next           = askingComissariatAddress
-        self.data_prompt    = p.info["comissariat"]["subtypes"]["region"]["prompt"] 
+        self.next           = askingIfWasSummonedAfterMissedDeadlines
 
-    async def doSaveInput(self, thing):
-        self.context.user_info.comissariat_region = thing
-
-class askingComissariatAddress(acceptingUserInfoSkipping):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.next           = askingIfWasSummoned
-        self.data_prompt    = p.info["comissariat"]["subtypes"]["address"]["prompt"] 
-
-    async def doSaveInput(self, thing):
-        self.context.user_info.comissariat_address = thing
-"""
 
 # --- plea_ignored
 
@@ -353,15 +335,13 @@ class pleaIgnored(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "plea_ignored"
-        self.next           = askingIfWasSummonedWhenPleaIgnored
-
-
+        self.next           = askingIfWasSummonedAfterIgnore
 
 
 # --- general
 
 
-class askingIfWasSummoned(gettingUserConditions):
+class askingIfWasSummonedAfterHearing(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
         super().__init__(context, prev, keyboard_mes_id)
         self.cond_type  = "summoned_after_hearing"
@@ -377,27 +357,56 @@ class yesSummonedAfterHearing(insertDocPartsState):
         self.cond_type      = "yes_summoned_after_hearing"
         self.next           = askingSummonDate
 
-class askingIfWasSummonedWhenPleaIgnored(gettingUserConditions):
-    def __init__(self, context, prev=None, keyboard_mes_id=None):
-        super().__init__(context, prev, keyboard_mes_id)
-        self.cond_type  = "summoned_plea_ignored"
-        self.next       = None
-        self.nexts      = {
-          "yes_summoned_plea_ignored"   : yesSummonedPleaIgnored,
-          "no_summoned_after_hearing"   : noSummonedAfterHearing,
-        }
-
-class yesSummonedPleaIgnored(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "yes_summoned_plea_ignored"
-        self.next           = askingSummonDate
-
 class noSummonedAfterHearing(insertDocPartsState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.cond_type      = "no_summoned_after_hearing"
         self.next           = askingDocumentsForAnnexes
+
+class askingIfWasSummonedAfterIgnore(gettingUserConditions):
+    def __init__(self, context, prev=None, keyboard_mes_id=None):
+        super().__init__(context, prev, keyboard_mes_id)
+        self.cond_type  = "summoned_after_plea_ignored"
+        self.next       = None
+        self.nexts      = {
+          "yes_summoned_after_plea_ignored" : yesSummonedPleaIgnored,
+          "no_summoned_after_plead_ingored" : noSummonedPleaIgnored,
+        }
+
+class yesSummonedPleaIgnored(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "yes_summoned_after_plea_ignored"
+        self.next           = askingSummonDate
+
+class noSummonedPleaIgnored(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "no_summoned_after_plead_ingored"
+        self.next           = askingDocumentsForAnnexes
+
+class askingIfWasSummonedAfterMissedDeadlines(gettingUserConditions):
+    def __init__(self, context, prev=None, keyboard_mes_id=None):
+        super().__init__(context, prev, keyboard_mes_id)
+        self.cond_type  = "summoned_after_missed_deadlines"
+        self.next       = None
+        self.nexts      = {
+          "yes_summoned_after_missed_deadlines" : yesSummonedDeadlinesMissed,
+          "no_summoned_after_missed_deadlines"  : noSummonedDeadlinesMisseded,
+        }
+
+class yesSummonedDeadlinesMissed(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "yes_summoned_after_missed_deadlines"
+        self.next           = askingSummonDate
+
+class noSummonedDeadlinesMisseded(insertDocPartsState):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+        self.cond_type      = "no_summoned_after_missed_deadlines"
+        self.next           = askingDocumentsForAnnexes
+
 
 class askingSummonDate(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):

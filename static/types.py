@@ -47,8 +47,8 @@ class userInfo():
             i["comissar"]["subtypes"]["name"]["description"]
         self.comissar_address       = \
             i["comissar"]["subtypes"]["address"]["description"]
-        self.comissariat_region     = \
-            i["comissariat"]["subtypes"]["region"]["description"]
+        self.comissariat_name       = \
+            i["comissariat"]["subtypes"]["name"]["description"]
         self.comissariat_address    = \
             i["comissariat"]["subtypes"]["address"]["description"]
         self.comission_region       = \
@@ -83,8 +83,11 @@ class userCondition():
         self.rejection_reason_deadline_missed       = False
         self.rejection_reason_no_reason             = False
         self.yes_summoned_after_hearing             = False
+        self.yes_summoned_after_plea_ignored        = False
+        self.yes_summoned_after_missed_deadlines    = False
         self.no_summoned_after_hearing              = False
-        self.yes_summoned_plea_ignored              = False
+        self.no_summoned_after_plead_ingored        = False
+        self.no_summoned_after_missed_deadlines     = False
         self.protocol_copy                          = False
         self.comission_decision                     = False
         self.characteristics                        = False
@@ -100,6 +103,7 @@ class userDocument():
         self.fact_less_votes                        = False
         self.fact_deadline_missed                   = False
         self.fact_incaction                         = False
+        self.fact_illegal_summon                    = False
         self.module_witnesses_not_heard             = False
         self.module_no_quorum                       = False
         self.module_less_votes                      = False

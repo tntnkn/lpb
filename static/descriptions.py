@@ -30,7 +30,7 @@ comissar_name   = "ФИО комиссара"
 comissar_address= "Адрес комиссара"
 
 comissariat         = "Информация о комиссариате"
-comissariat_region  = "Регион комиссариата"
+comissariat_name    = "Название комиссариата"
 comissariat_address = "Адрес комиссариата"
 
 comission           = f"Информация о комиссии (жми {c.comission} для помощи)"
@@ -101,5 +101,14 @@ class conditions():
             "Да"
     no_summoned_after_hearing               = \
             "Нет"
-    yes_summoned_plea_ignored   = yes_summoned_after_hearing            
-    summoned_plea_ignored       = summoned_after_hearing
+    summoned_after_missed_deadlines     = summoned_after_hearing
+    summoned_after_plea_ignored         = summoned_after_hearing
+    yes_summoned_after_plea_ignored     = yes_summoned_after_hearing
+    yes_summoned_after_missed_deadlines = yes_summoned_after_hearing
+    no_summoned_after_plead_ingored     = no_summoned_after_hearing
+    no_summoned_after_missed_deadlines  = no_summoned_after_hearing
+
+
+
+
+
