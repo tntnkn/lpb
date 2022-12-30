@@ -87,3 +87,28 @@ class acceptingTextInput(stateInterface):
     async def doSaveInput(self, inp):
         pass
 
+
+class acceptingSubsequentTextInput(acceptingTextInput):
+    def __init__(self, context, prev=None, message_id=None):
+        super().__init__(context, prev)
+        self.final_text         = ""
+
+    async def doGo(self, inp):
+        if self.stopInput(inp):
+            self.final_text = self.final_text[0:-2]
+            await self.saveInput(self.final_text)
+            return await self.switch()
+        if not await self.checkInput(inp):
+            await self.promptForCorrection()
+        else:
+            to_add = inp + ', '
+            self.final_text += to_add 
+        return await self.go()
+
+    async def reject(self):
+        self.final_text = ''
+        return await super().reject()
+
+    def stopInput(self, inp):
+        return True
+

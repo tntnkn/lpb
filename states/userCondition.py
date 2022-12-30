@@ -1,4 +1,4 @@
-from .base import acceptingTextInput, acceptingWrappedKeyboardInput, stateInterface, justSendMessage
+from .base import acceptingTextInput, acceptingWrappedKeyboardInput, stateInterface, justSendMessage, acceptingSubsequentTextInput
 from .userInfo import acceptingUserInfo
 from static.condition import conditions, document_parts
 from utils.messaging import send_unsolicited_message
@@ -145,6 +145,18 @@ class acceptingUserInfoSkipping(acceptingUserInfo):
             self.next = self.next(self.context, self.prev)
         return await self.next.go()
 
+class acceptingUserInfoSkippingSubsequent(acceptingSubsequentTextInput):
+    def __init__(self, context, prev=None):
+        super().__init__(context, prev)
+
+    async def go_next(self):
+        await self.finish()
+        try:
+            return await self.next.go()
+        except:
+            self.next = self.next(self.context, self.prev)
+        return await self.next.go()
+
 
 # ===== Concrete classes
 
@@ -200,7 +212,7 @@ class preDiseaseMessage(justSendMessage):
         self.next       = askingSingleDayDiseases
         self.message    = d.pre_messages.pre_diseases_message
 
-class askingSingleDayDiseases(acceptingUserInfoSkipping):
+class askingSingleDayDiseases(acceptingUserInfoSkippingSubsequent):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.next           = askingSingleDayDeliveryMethod
@@ -208,6 +220,11 @@ class askingSingleDayDiseases(acceptingUserInfoSkipping):
 
     async def doSaveInput(self, thing):
         self.context.user_info.single_day_diseases = thing
+
+    def stopInput(self, inp):
+        if len(inp) <= 3:
+            return True
+        return False
 
 class askingSingleDayDeliveryMethod(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -320,7 +337,7 @@ class askingComissionViolations(acceptingMultiChoiseKeyboardInput):
         else:
             self.next = insertingComissionViolationsDocParts
 
-class askingForWitnessesNames(acceptingUserInfoSkipping):
+class askingForWitnessesNames(acceptingUserInfoSkippingSubsequent):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         print("askingForWitnessesNames")
@@ -329,6 +346,11 @@ class askingForWitnessesNames(acceptingUserInfoSkipping):
 
     async def doSaveInput(self, thing):
         self.context.user_info.witnesses = thing
+
+    def stopInput(self, inp):
+        if len(inp) <= 3:
+            return True
+        return False
 
 class insertingComissionViolationsDocParts(insertDocPartsMultiChoiseState):
     def __init__(self, context, prev=None):
