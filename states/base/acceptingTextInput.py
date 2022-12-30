@@ -7,7 +7,7 @@ from aiogram.types   import ParseMode
 
 
 class acceptingTextInput(stateInterface):
-    MAX_INPUT_LEN = 10
+    MAX_INPUT_LEN = 200
 
     def __init__(self, context, prev=None, message_id=None):
         super().__init__(context, prev)
