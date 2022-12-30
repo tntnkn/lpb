@@ -141,7 +141,7 @@ class acceptingFormFillingInput(acceptingWrappedKeyboardInput):
             await self.current_state.go()
         else:
             await send_unsolicited_message(
-                self.context.from_id, "Выберете исправление в меню!")
+                self.context.from_id, "Сначала выберете поле в меню, которое нужно заполнить, пожалуйста.")
         return self
 
     def getPagePos(self):
