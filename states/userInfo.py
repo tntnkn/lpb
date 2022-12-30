@@ -129,20 +129,20 @@ class askingComissariatName(acceptingUserInfo):
 class askingComissariatAddress(acceptingUserInfo):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
-        self.next           = askingComissionRegion
+        self.next           = askingComissionName
         self.data_prompt    = p.info["comissariat"]["subtypes"]["address"]["prompt"] 
 
     async def doSaveInput(self, thing):
         self.context.user_info.comissariat_address = thing
 
-class askingComissionRegion(acceptingUserInfo):
+class askingComissionName(acceptingUserInfo):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.next           = askingComissionAddress
-        self.data_prompt    = p.info["comission"]["subtypes"]["region"]["prompt"] 
+        self.data_prompt    = p.info["comission"]["subtypes"]["name"]["prompt"] 
 
     async def doSaveInput(self, thing):
-        self.context.user_info.comission_region = thing
+        self.context.user_info.comission_name = thing
 
 class askingComissionAddress(acceptingUserInfo):
     def __init__(self, context, prev=None):

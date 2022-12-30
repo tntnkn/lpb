@@ -51,8 +51,8 @@ class userInfo():
             i["comissariat"]["subtypes"]["name"]["description"]
         self.comissariat_address    = \
             i["comissariat"]["subtypes"]["address"]["description"]
-        self.comission_region       = \
-            i["comission"]["subtypes"]["region"]["description"]
+        self.comission_name         = \
+            i["comission"]["subtypes"]["name"]["description"]
         self.comission_address      = \
             i["comission"]["subtypes"]["address"]["description"]
         self.single_day_hearing_date = \

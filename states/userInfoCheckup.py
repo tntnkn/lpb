@@ -94,7 +94,7 @@ class comissionCheckup(fillingUserInfoForm):
         self.can_be_done = True
         self.info_type   = "comission"
         self.fields      = {
-            "comission_region"      : field(userInfo.askingComissionRegion),
+            "comission_name"        : field(userInfo.askingComissionName),
             "comission_address"     : field(userInfo.askingComissionAddress),
         }
 

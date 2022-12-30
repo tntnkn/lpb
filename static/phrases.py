@@ -131,10 +131,10 @@ info = {
     "comission": {
         "description"   : d.comission,
         "subtypes"      : {
-            "region": {
-                "prompt"        : p.comission_region,
-                "description"   : d.comission_region,
-                "tag"           : "comission_region",
+            "name": {
+                "prompt"        : p.comission_name,
+                "description"   : d.comission_name,
+                "tag"           : "comission_name",
             },
             "address": {
                 "prompt"        : p.comission_address,
