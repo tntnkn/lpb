@@ -5,13 +5,16 @@ import static.commands as c
 import services.sessionManager as sessionManager
 import bot
 from static.guides  import guide_court, guide_how_to_sue, guide_quorum, guide_fee, guide_comission, guide_comissariat
-from static.misc    import help_command_text
 from aiogram.types import ParseMode
 
 sm = sessionManager.get()
 
 
 # --- Commands Handlers
+
+@bot.dp.message_handler(commands=['guides'])
+async def startCommandHandler(message: bot.types.Message):
+    resp = await message.reply(c.mess.guides,parse_mode=ParseMode.HTML)
 
 @bot.dp.message_handler(commands=['guide_court'])
 async def startCommandHandler(message: bot.types.Message):
@@ -37,9 +40,13 @@ async def startCommandHandler(message: bot.types.Message):
 async def startCommandHandler(message: bot.types.Message):
     resp = await message.reply(guide_fee,parse_mode=ParseMode.HTML)
 
+@bot.dp.message_handler(commands=['info'])
+async def startCommandHandler(message: bot.types.Message):
+    resp = await message.reply(c.mess.info,parse_mode=ParseMode.HTML)
+
 @bot.dp.message_handler(commands=['help'])
 async def startCommandHandler(message: bot.types.Message):
-    resp = await message.reply(help_command_text,parse_mode=ParseMode.HTML)
+    resp = await message.reply(c.mess.help,parse_mode=ParseMode.HTML)
 
 @bot.dp.message_handler(commands=['start'])
 async def startCommandHandler(message: bot.types.Message):
@@ -65,10 +72,6 @@ async def startCommandHandler(message: bot.types.Message):
     session.current_state = await session.current_state.go()
     sm.memoMessage(from_id, message)
     sm.memoMessage(from_id, resp)
-
-@bot.dp.message_handler(commands=['help']) 
-async def testHandler(message: bot.types.Message):
-    await messageFallbackHandler(message=message)
 
 
 # --- Test Commands Handlers
