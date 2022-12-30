@@ -12,7 +12,7 @@ def makeDocument(from_id, user_info, user_condition, user_document):
 
 def makeDocumentJinja(f_name, user_info, user_condition, user_document):
     print("makeDocumentJinja")
-    tags = { **vars(user_info), **vars(user_document) }
+    tags = { **vars(user_info), **vars(user_document), **vars(user_condition) }
     try:
         doc = getDoc(user_condition)
         doc.render(tags)

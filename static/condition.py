@@ -267,7 +267,7 @@ document_parts = {
     "plea_ignored"     : {
         "description"   : c.plea_ignored,
         "tags"          : [
-            "module_deadline_missed",
+            "module_ignore",
             "fact_incaction",
             "plea_incaction",
             "petition_provide_personal_case",
