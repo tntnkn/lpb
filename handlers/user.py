@@ -48,18 +48,6 @@ async def startCommandHandler(message: bot.types.Message):
 async def startCommandHandler(message: bot.types.Message):
     resp = await message.reply(c.mess.help,parse_mode=ParseMode.HTML)
 
-@bot.dp.message_handler(commands=['start'])
-async def startCommandHandler(message: bot.types.Message):
-    from_id = message.from_id
-    session = sm.getSession(from_id)
-    if session.current_state:
-        session = await sm.resetSession(from_id)
-    resp = await message.reply("Давайте сделаем иск!")
-    session.current_state = gettingUserInfoFormInput(session)
-    session.current_state = await session.current_state.go()
-    sm.memoMessage(from_id, message)
-    sm.memoMessage(from_id, resp)
-
 from states.general import gettingUserInfo 
 @bot.dp.message_handler(commands=['start'])
 async def startCommandHandler(message: bot.types.Message):

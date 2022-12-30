@@ -6,9 +6,6 @@ class acceptingUserInfo(acceptingTextInput):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
 
-    async def doCheckInput(self, inp):
-        return True
-
 
 class askingName(acceptingUserInfo):
     def __init__(self, context, prev=None):

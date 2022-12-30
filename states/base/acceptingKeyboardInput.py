@@ -18,7 +18,8 @@ class acceptingKeyboardInput(stateInterface):
         switched, ret = await self.switch(callback_data)
         if not switched:
             ret = await self.doGo(callback_data, new_user_info)
-            self.last_callback_data = callback_data
+            if callback_data != 'changing':
+                self.last_callback_data = callback_data
         return ret 
 
     async def finish(self):
