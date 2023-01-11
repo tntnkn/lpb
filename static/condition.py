@@ -268,9 +268,11 @@ document_parts = {
         "description"   : c.plea_ignored,
         "tags"          : [
             "module_ignore",
-            "fact_incaction",
-            "plea_incaction",
+            "plea_inaction",
             "petition_provide_personal_case",
+            "fact_incaction",
+            'party_inaction',
+            'title_inaction',
             ]
     },
 
@@ -278,7 +280,7 @@ document_parts = {
         "description"   : c.not_summoned_but_deadline_missed,
         "tags"          : [
                 'module_deadline_missed',
-                'plea_incaction',
+                'plea_inaction',
                 'petition_provide_personal_case',
                 'fact_incaction',
                 'party_inaction',

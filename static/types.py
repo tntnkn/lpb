@@ -120,7 +120,7 @@ class userDocument():
         self.petition_provide_protocol_copy         = False
         self.plea_cancel_denial                     = False
         self.plea_cancel_summon                     = False
-        self.plea_incaction                         = False
+        self.plea_inaction                          = False
         self.plea_demand_rehearing                  = False
         self.annex_protocol_copy                    = False
         self.annex_comission_decision               = False
