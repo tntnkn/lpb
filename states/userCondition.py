@@ -97,13 +97,6 @@ class acceptingMultiChoiseKeyboardInput(gettingUserConditions):
         for tag in document_parts[choise]["tags"]:
             doc_dict[tag] = boolean
 
-    async def reject(self):  
-        await super().reject()
-        doc_dict = vars( self.context.user_document )
-        choises = condition[self.cond_type]["choises"]
-        for choise in choises:
-            for tag in document_parts[choise]["tags"]:
-                doc_dict[tag] = False
 
 class acceptingUserInfoSkipping(acceptingUserInfo):
     def __init__(self, context, prev=None):
