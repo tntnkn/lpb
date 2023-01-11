@@ -109,6 +109,7 @@ class userDocument():
         self.module_less_votes                      = False
         self.module_no_beliefes                     = False
         self.module_deadline_missed                 = False
+        self.module_deadline_missed_rejection       = False
         self.module_no_motivation                   = False
         self.module_deadline_missed                 = False
         self.module_ignore                          = False

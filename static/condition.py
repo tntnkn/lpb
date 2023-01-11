@@ -175,7 +175,7 @@ document_parts = {
     "rejection_reason_deadline_missed": {
         "description"   : c.rejection_reason_deadline_missed,
         "tags"          : [
-                'module_deadline_missed',
+                'module_deadline_missed_rejection',
             ]
     },
     "rejection_reason_no_reason"     : {
@@ -283,6 +283,7 @@ document_parts = {
                 'plea_inaction',
                 'petition_provide_personal_case',
                 'fact_incaction',
+                'fact_deadline_missed',
                 'party_inaction',
                 'title_inaction',
             ]
