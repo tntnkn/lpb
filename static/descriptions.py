@@ -68,6 +68,12 @@ class conditions():
             "Да"
     single_day_ags_not_asked                = \
             "Нет"
+    single_day_ask_ags_copy                 = \
+            "У вас есть копия заявления на АГС?"
+    single_day_yes_ags_copy                 = \
+            "Да (приложите его к иску)"
+    single_day_no_ags_copy                  = \
+            "Нет"
     comission_reaction_on_plea              = \
             "Какая была реакция комиссии на заявление?"
     plea_ignored                            = \

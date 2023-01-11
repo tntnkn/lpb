@@ -122,6 +122,16 @@ conditions = {
             },
         }
     },
+    "single_day_ask_ags_copy"     : {
+        "select"        : selectTypes.singleChoise,
+        "description"   : c.single_day_ask_ags_copy,
+        "choises"       : {
+            "single_day_yes_ags_copy"     : {
+            },
+            "single_day_no_ags_copy"     : {
+            },
+        }
+    },
 }
 
 document_parts = {
@@ -312,6 +322,17 @@ document_parts = {
     },
     "single_day_ags_not_asked"  : {
         "description"   : c.single_day_ags_not_asked,
+        "tags"          : [
+            ]
+    },
+    "single_day_yes_ags_copy"  : {
+        "description"   : c.single_day_yes_ags_copy,
+        "tags"          : [
+                'annex_single_day_ags_plea_copy',
+            ]
+    },
+    "single_day_no_ags_copy"  : {
+        "description"   : c.single_day_no_ags_copy,
         "tags"          : [
             ]
     },

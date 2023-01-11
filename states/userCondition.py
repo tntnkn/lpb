@@ -198,8 +198,18 @@ class singleDayAGS(gettingUserConditions):
         self.cond_type  = "single_day_asked_for_ags"
         self.next       = None 
         self.nexts      = {
-          "single_day_ags_asked"        : endUserConditions,
+          "single_day_ags_asked"        : askingIfHaveAGSCopy,
           "single_day_ags_not_asked"    : endUserConditions,
+        }
+
+class askingIfHaveAGSCopy(gettingUserConditions):
+    def __init__(self, context, prev=None, keyboard_mes_id=None):
+        super().__init__(context, prev, keyboard_mes_id)
+        self.cond_type  = "single_day_ask_ags_copy"
+        self.next       = None 
+        self.nexts      = {
+          "single_day_yes_ags_copy"     : endUserConditions,
+          "single_day_no_ags_copy"      : endUserConditions,
         }
 
 

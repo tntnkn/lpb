@@ -73,6 +73,8 @@ class userCondition():
         self.single_day_came_themselves             = False
         self.single_day_ags_asked                   = False
         self.single_day_ags_not_asked               = False
+        self.single_day_yes_ags_copy                = False
+        self.single_day_no_ags_copy                 = False
         self.summoned_to_the_hearing_and_rejected   = False
         self.plea_ignored                           = False
         self.not_summoned_but_deadline_missed       = False
@@ -129,6 +131,7 @@ class userDocument():
         self.annex_bio                              = False
         self.annex_comissariat_response             = False
         self.annex_summon_copy                      = False
+        self.annex_single_day_ags_plea_copy         = False
         self.title_inaction                         = False
         self.party_inaction                         = False
         self.fact_single_day_forcingly_delivered    = False
