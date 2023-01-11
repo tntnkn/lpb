@@ -47,7 +47,7 @@ class gettingUserConditions(acceptingWrappedKeyboardInput):
         else:
             self.next = self.nexts[callback_data]
 
-        await self.inseretDocParts(callback_data)
+        await self.manageDocParts(callback_data)
 
     async def reject(self):  
         await super().reject()
@@ -66,7 +66,7 @@ class gettingUserConditions(acceptingWrappedKeyboardInput):
             return '\/'
         return ''
 
-    async def inseretDocParts(self, choise):
+    async def manageDocParts(self, choise):
         doc_dict  = vars(self.context.user_document)
         cond_dict = vars(self.context.user_condition) 
 
@@ -84,19 +84,7 @@ class acceptingMultiChoiseKeyboardInput(gettingUserConditions):
     async def toggleButton(self, callback_data, new_user_info):
         cond_dict = vars( self.context.user_condition )
         cond_dict[callback_data] = not cond_dict[callback_data]
-        await self.inseretDocParts(callback_data)
-
-    async def inseretDocParts(self, choise):
-        doc_dict  = vars(self.context.user_document)
-        cond_dict = vars(self.context.user_condition) 
-
-        boolean   = True
-        if not cond_dict[choise]:
-            boolean = False
-
-        for tag in document_parts[choise]["tags"]:
-            doc_dict[tag] = boolean
-
+        await self.manageDocParts(callback_data)
 
 class acceptingUserInfoSkipping(acceptingUserInfo):
     def __init__(self, context, prev=None):
