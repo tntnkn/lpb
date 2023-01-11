@@ -69,6 +69,26 @@ class acceptingMultiChoiseKeyboardInput(gettingUserConditions):
     async def toggleButton(self, callback_data, new_user_info):
         cond_dict = vars( self.context.user_condition )
         cond_dict[callback_data] = not cond_dict[callback_data]
+        await self.inseretDocParts(callback_data)
+
+    async def inseretDocParts(self, choise):
+        doc_dict  = vars(self.context.user_document)
+        cond_dict = vars(self.context.user_condition) 
+
+        boolean   = True
+        if not cond_dict[choise]:
+            boolean = False
+
+        for tag in document_parts[choise]["tags"]:
+            doc_dict[tag] = boolean
+
+    async def reject(self):  
+        await super().reject()
+        doc_dict = vars( self.context.user_document )
+        choises = condition[self.cond_type]["choises"]
+        for choise in choises:
+            for tag in document_parts[choise]["tags"]:
+                doc_dict[tag] = False
 
 class insertDocPartsState(stateInterface):
     def __init__(self, context, prev=None):
@@ -100,38 +120,7 @@ class insertDocPartsState(stateInterface):
             self.next = self.next(self.context, self.prev)
         return await self.next.go()
             
-class insertDocPartsMultiChoiseState(stateInterface):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = None
 
-    async def go(self, *args, **kwargs):
-        await super().go(*args, **kwargs)
-        doc_dict  = vars(self.context.user_document)
-        cond_dict = vars(self.context.user_condition) 
-        choises = conditions[self.cond_type]["choises"]
-        for choise in choises:
-            if not cond_dict[choise]:
-                continue
-            for tag in document_parts[choise]["tags"]:
-                doc_dict[tag] = True
-        return await self.go_next() 
-
-    async def reject(self):  
-        await super().reject()
-        doc_dict = vars( self.context.user_document )
-        choises = condition[self.cond_type]["choises"]
-        for choise in choises:
-            for tag in document_parts[choise]["tags"]:
-                doc_dict[tag] = False
-
-    async def go_next(self):
-        await self.finish()
-        try:
-            return await self.next.go()
-        except:
-            self.next = self.next(self.context, self.prev)
-        return await self.next.go()
 
 class acceptingUserInfoSkipping(acceptingUserInfo):
     def __init__(self, context, prev=None):
@@ -328,20 +317,20 @@ class askingComissionViolations(acceptingMultiChoiseKeyboardInput):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
         super().__init__(context, prev, keyboard_mes_id)
         self.cond_type   = "comission_violations"
-        self.next        = insertingComissionViolationsDocParts 
+        self.next        = askingComsissionReasonForRejection 
 
     async def toggleButton(self, callback_data, new_user_info):
         await super().toggleButton(callback_data, new_user_info)
         if self.context.user_condition.witnesses_not_heard:
             self.next = askingForWitnessesNames
         else:
-            self.next = insertingComissionViolationsDocParts
+            self.next = askingComsissionReasonForRejection
 
 class askingForWitnessesNames(acceptingUserInfoSkippingSubsequent):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         print("askingForWitnessesNames")
-        self.next           = insertingComissionViolationsDocParts
+        self.next           = askingComsissionReasonForRejection
         self.data_prompt    = p.info["hearings"]["subtypes"]["witnesses"]["prompt"] 
 
     async def doSaveInput(self, thing):
@@ -351,13 +340,6 @@ class askingForWitnessesNames(acceptingUserInfoSkippingSubsequent):
         if len(inp) <= 3:
             return True
         return False
-
-class insertingComissionViolationsDocParts(insertDocPartsMultiChoiseState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        print("insertingComissionViolationsDocParts")
-        self.cond_type      = "comission_violations"
-        self.next           = askingComsissionReasonForRejection
 
 class askingComsissionReasonForRejection(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -497,15 +479,9 @@ class askingDocumentsForAnnexes(acceptingMultiChoiseKeyboardInput):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
         super().__init__(context, prev, keyboard_mes_id)
         self.cond_type   = "annexes"
-        self.next        = saveAnnexesChoises  
+        self.next        = endUserConditions  
         self.can_be_done = True
  
-class saveAnnexesChoises(insertDocPartsMultiChoiseState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "annexes"
-        self.next           = endUserConditions
-
 class endUserConditions(acceptingWrappedKeyboardInput):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
         super().__init__(context, prev, keyboard_mes_id)
