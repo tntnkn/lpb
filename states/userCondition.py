@@ -47,18 +47,33 @@ class gettingUserConditions(acceptingWrappedKeyboardInput):
         else:
             self.next = self.nexts[callback_data]
 
+        await self.inseretDocParts(callback_data)
+
     async def reject(self):  
         await super().reject()
         cond_dict   = vars( self.context.user_condition )
+        doc_dict    = vars( self.context.user_document )
         choises     = conditions[self.cond_type]["choises"]
         for choise in choises.keys():
             cond_dict[choise] = False
+            tags = document_parts[choise]["tags"] 
+            for tag in tags:
+                doc_dict[tag] = False
              
     def getEmoji(self, choise):
         c = vars(self.context.user_condition)[choise]
         if c:
             return '\/'
         return ''
+
+    async def inseretDocParts(self, choise):
+        doc_dict  = vars(self.context.user_document)
+        cond_dict = vars(self.context.user_condition) 
+
+        boolean   = cond_dict[choise]
+
+        for tag in document_parts[choise]["tags"]:
+            doc_dict[tag] = boolean
 
 class acceptingMultiChoiseKeyboardInput(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -89,38 +104,6 @@ class acceptingMultiChoiseKeyboardInput(gettingUserConditions):
         for choise in choises:
             for tag in document_parts[choise]["tags"]:
                 doc_dict[tag] = False
-
-class insertDocPartsState(stateInterface):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = None
-        self.next           = None
-
-    async def go(self, *args, **kwargs):
-        await super().go(*args, **kwargs)
-
-        tags = document_parts[self.cond_type]["tags"] 
-        parts_dict = vars( self.context.user_document )
-        for tag in tags:
-            parts_dict[tag] = True
-        return await self.go_next()   
-
-    async def reject(self):  
-        await super().reject()
-        tags = document_parts[self.cond_type]["tags"] 
-        parts_dict = vars( self.context.user_condition )
-        for tag in tags:
-            parts_dict[tag] = False
-
-    async def go_next(self):
-        await self.finish()
-        try:
-            return await self.next.go()
-        except:
-            self.next = self.next(self.context, self.prev)
-        return await self.next.go()
-            
-
 
 class acceptingUserInfoSkipping(acceptingUserInfo):
     def __init__(self, context, prev=None):
@@ -164,18 +147,12 @@ class askingWhatHappened(gettingUserConditions):
         self.cond_type  = "what_happened"
         self.next       = None 
         self.nexts      = {
-          "single_day_summon"                   : singleDaySummon,
-          "ags_rejected"                        : agsRejected,
+          "single_day_summon"                   : askingSingleDayHearingDate,
+          "ags_rejected"                        : askingAGSPleaDate,
         }
 
 
 # ----- single_day_summon
-
-class singleDaySummon(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "single_day_summon"
-        self.next           = askingSingleDayHearingDate
 
 class askingSingleDayHearingDate(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):
@@ -221,21 +198,9 @@ class askingSingleDayDeliveryMethod(gettingUserConditions):
         self.cond_type  = "single_day_delivery_method"
         self.next       = None 
         self.nexts      = {
-          "single_day_forcingly_delivered": forcinglyDelivered,
-          "single_day_came_themselves"    : cameThemSelves,
+          "single_day_forcingly_delivered": askingForcinglyDeliveryDate,
+          "single_day_came_themselves"    : singleDayAGS,
         }
-
-class forcinglyDelivered(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "single_day_forcingly_delivered"
-        self.next           = askingForcinglyDeliveryDate
-
-class cameThemSelves(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "single_day_came_themselves"
-        self.next           = singleDayAGS
 
 class askingForcinglyDeliveryDate(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):
@@ -252,29 +217,12 @@ class singleDayAGS(gettingUserConditions):
         self.cond_type  = "single_day_asked_for_ags"
         self.next       = None 
         self.nexts      = {
-          "single_day_ags_asked"        : agsAsked,
-          "single_day_ags_not_asked"    : agsNotAsked,
+          "single_day_ags_asked"        : endUserConditions,
+          "single_day_ags_not_asked"    : endUserConditions,
         }
 
-class agsAsked(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "single_day_ags_asked"
-        self.next           = endUserConditions
-
-class agsNotAsked(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "single_day_ags_not_asked"
-        self.next           = endUserConditions
 
 # ----- ags_rejected
-
-class agsRejected(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "ags_rejected"
-        self.next           = askingAGSPleaDate
 
 class askingAGSPleaDate(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):
@@ -291,18 +239,12 @@ class comissionReactionOnPlea(gettingUserConditions):
         self.cond_type  = "comission_reaction_on_plea"
         self.next       = None 
         self.nexts      = {
-          "summoned_to_the_hearing_and_rejected": summonedAndRejectedBranch,
-          "plea_ignored"                        : pleaIgnored,
-          "not_summoned_but_deadline_missed"    : notSummonedButDeadlinesMissed,
+          "summoned_to_the_hearing_and_rejected": askingComissionHearingDate,
+          "plea_ignored"                        : askingIfWasSummonedAfterIgnore,
+          "not_summoned_but_deadline_missed"    : askingIfWasSummonedAfterMissedDeadlines,
         }
 
 # --- summoned_to_the_hearing_and_rejected
-
-class summonedAndRejectedBranch(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "summoned_to_the_hearing_and_rejected"
-        self.next           = askingComissionHearingDate
 
 class askingComissionHearingDate(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):
@@ -348,50 +290,10 @@ class askingComsissionReasonForRejection(gettingUserConditions):
         self.cond_type  = "comission_reason_for_rejection"
         self.next       = None 
         self.nexts      = {
-          "rejection_reason_not_believe"        : insertNotBelieveRejDocParts,
-          "rejection_reason_deadline_missed"    : insertDeadlineRejDocParts,
-          "rejection_reason_no_reason"          : insertNoReasonRejDocParts,
+          "rejection_reason_not_believe"    : askingIfWasSummonedAfterHearing,
+          "rejection_reason_deadline_missed": askingIfWasSummonedAfterHearing,
+          "rejection_reason_no_reason"      : askingIfWasSummonedAfterHearing,
         }
-
-class insertNotBelieveRejDocParts(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "rejection_reason_not_believe"
-        self.next           = askingIfWasSummonedAfterHearing
-
-class insertDeadlineRejDocParts(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "rejection_reason_deadline_missed"
-        self.next           = askingIfWasSummonedAfterHearing
-
-class insertNoReasonRejDocParts(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "rejection_reason_no_reason"
-        self.next           = askingIfWasSummonedAfterHearing
-
-
-# --- not_summoned_but_deadline_missed
-
-class notSummonedButDeadlinesMissed(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "not_summoned_but_deadline_missed"
-        self.next           = askingIfWasSummonedAfterMissedDeadlines
-
-
-# --- plea_ignored
-
-class pleaIgnored(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "plea_ignored"
-        self.next           = askingIfWasSummonedAfterIgnore
-
-
-# --- general
-
 
 class askingIfWasSummonedAfterHearing(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -399,21 +301,11 @@ class askingIfWasSummonedAfterHearing(gettingUserConditions):
         self.cond_type  = "summoned_after_hearing"
         self.next       = None
         self.nexts      = {
-          "yes_summoned_after_hearing"   : yesSummonedAfterHearing,
-          "no_summoned_after_hearing"    : noSummonedAfterHearing,
+          "yes_summoned_after_hearing"   : askingSummonDate,
+          "no_summoned_after_hearing"    : preAnnexesMessage,
         }
 
-class yesSummonedAfterHearing(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "yes_summoned_after_hearing"
-        self.next           = askingSummonDate
-
-class noSummonedAfterHearing(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "no_summoned_after_hearing"
-        self.next           = preAnnexesMessage
+# --- plea_ignored
 
 class askingIfWasSummonedAfterIgnore(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -421,21 +313,11 @@ class askingIfWasSummonedAfterIgnore(gettingUserConditions):
         self.cond_type  = "summoned_after_plea_ignored"
         self.next       = None
         self.nexts      = {
-          "yes_summoned_after_plea_ignored" : yesSummonedPleaIgnored,
-          "no_summoned_after_plead_ingored" : noSummonedPleaIgnored,
+          "yes_summoned_after_plea_ignored" : askingSummonDate,
+          "no_summoned_after_plead_ingored" : preAnnexesMessage,
         }
 
-class yesSummonedPleaIgnored(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "yes_summoned_after_plea_ignored"
-        self.next           = askingSummonDate
-
-class noSummonedPleaIgnored(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "no_summoned_after_plead_ingored"
-        self.next           = preAnnexesMessage
+# --- not_summoned_but_deadline_missed
 
 class askingIfWasSummonedAfterMissedDeadlines(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
@@ -443,22 +325,11 @@ class askingIfWasSummonedAfterMissedDeadlines(gettingUserConditions):
         self.cond_type  = "summoned_after_missed_deadlines"
         self.next       = None
         self.nexts      = {
-          "yes_summoned_after_missed_deadlines" : yesSummonedDeadlinesMissed,
-          "no_summoned_after_missed_deadlines"  : noSummonedDeadlinesMisseded,
+          "yes_summoned_after_missed_deadlines" : askingSummonDate,
+          "no_summoned_after_missed_deadlines"  : preAnnexesMessage,
         }
 
-class yesSummonedDeadlinesMissed(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "yes_summoned_after_missed_deadlines"
-        self.next           = askingSummonDate
-
-class noSummonedDeadlinesMisseded(insertDocPartsState):
-    def __init__(self, context, prev=None):
-        super().__init__(context, prev)
-        self.cond_type      = "no_summoned_after_missed_deadlines"
-        self.next           = preAnnexesMessage
-
+# --- general
 
 class askingSummonDate(acceptingUserInfoSkipping):
     def __init__(self, context, prev=None):
