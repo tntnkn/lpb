@@ -115,14 +115,14 @@ class acceptingUserInfoSkippingSubsequent(acceptingSubsequentTextInput):
 
 
 # ----- Start
-
+"""
 class startUserCondition(justSendMessage):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
         self.next       = askingWhatHappened
         self.message    = d.pre_messages.pre_condition_message
-
-class askingWhatHappened(gettingUserConditions):
+"""
+class startUserCondition(gettingUserConditions):
     def __init__(self, context, prev=None, keyboard_mes_id=None):
         super().__init__(context, prev, keyboard_mes_id)
         self.cond_type  = "what_happened"

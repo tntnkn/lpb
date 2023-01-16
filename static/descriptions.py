@@ -53,9 +53,9 @@ class conditions():
     what_happened                           = \
             "Что случилось?"
     ags_rejected                            = \
-            "Отказали в агс"
+            "Отказали в агс (если вы заранее подавали на АГС)"
     single_day_summon                       = \
-            "Призвали одним днём"
+            "Призвали одним днём (включая заявление на АГС в ходе призыва одним днём)"
     single_day_delivery_method              = \
             "Как оказались в военкомате?"
     single_day_forcingly_delivered          = \
