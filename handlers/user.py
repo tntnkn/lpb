@@ -55,7 +55,7 @@ async def startCommandHandler(message: bot.types.Message):
     session = sm.getSession(from_id)
     if session.current_state:
         session = await sm.resetSession(from_id)
-    resp = await message.reply("Давайте сделаем иск!\nОбратите внимание, что на обжалование решений призывной комиссии, таких как отказ в предоставлении АГС и призыв на военную службу, есть всего три месяца.\n\nЕсли у Вас возникнут трудоности, напишите нашим друзьям в @agsnowarbot, и Вам обязательно помогут.")
+    resp = await message.reply("Давайте сделаем иск!\nОбратите внимание, что на обжалование решений призывной комиссии, таких как отказ в предоставлении АГС и призыв на военную службу, есть всего три месяца.\n\nЕсли у Вас возникнут трудности, напишите нашим друзьям в @agsnowarbot, и Вам обязательно помогут.")
     session.current_state = gettingUserInfoFormInput(session)
     session.current_state = await session.current_state.go()
     sm.memoMessage(from_id, message)
