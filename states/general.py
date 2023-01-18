@@ -66,15 +66,6 @@ class gettingUserInfo(globalState):
         self.current_state = self.default_state
         self.next          = gettingUserInfoFormInput(context, self, False)
 
-class gettingUserInfoFormInput(globalState):
-    def __init__(self, context, prev=None, shall_enforce_input=True):
-        super().__init__(context, prev)
-        self.user_info     = context.user_info
-        self.default_state = checkingInfoFirstState(self, None, None, 
-                                                    shall_enforce_input)
-        self.current_state = self.default_state
-        self.next          = gettingUserCondition
-
 class gettingUserCondition(globalState):
     def __init__(self, context, prev=None):
         super().__init__(context, prev)
@@ -83,7 +74,7 @@ class gettingUserCondition(globalState):
         self.user_info     = context.user_info
         self.default_state = userConditionFirstState(self)
         self.current_state = self.default_state
-        self.next          = creatingSuit
+        self.next          = gettingUserInfoFormInput
 
     async def go(self, smth=None, *args, **kwargs):
         try:
@@ -99,6 +90,15 @@ class gettingUserCondition(globalState):
             print( vars(self.context.user_document) )
             return await self.switch()
         return self
+
+class gettingUserInfoFormInput(globalState):
+    def __init__(self, context, prev=None, shall_enforce_input=True):
+        super().__init__(context, prev)
+        self.user_info     = context.user_info
+        self.default_state = checkingInfoFirstState(self, None, None, 
+                                                    shall_enforce_input)
+        self.current_state = self.default_state
+        self.next          = creatingSuit
 
 class creatingSuit(globalState):
     def __init__(self, context, prev=None):

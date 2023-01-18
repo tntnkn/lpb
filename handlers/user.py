@@ -1,5 +1,5 @@
 from filters.user   import isPromtingForUserInfo, isFillingUserInfoForm, isSelectingUserConditionsOptions
-from states.general import gettingUserInfoFormInput, noParticularActionState
+from states.general import gettingUserCondition, noParticularActionState
 from static.types   import userSession
 import static.commands as c
 import services.sessionManager as sessionManager
@@ -56,7 +56,7 @@ async def startCommandHandler(message: bot.types.Message):
     if session.current_state:
         session = await sm.resetSession(from_id)
     resp = await message.reply("Давайте сделаем иск!\nОбратите внимание, что на обжалование решений призывной комиссии, таких как отказ в предоставлении АГС и призыв на военную службу, есть всего три месяца.\n\nЕсли у Вас возникнут трудности, напишите нашим друзьям в @agsnowarbot, и Вам обязательно помогут.")
-    session.current_state = gettingUserInfoFormInput(session)
+    session.current_state = gettingUserCondition(session)
     session.current_state = await session.current_state.go()
     sm.memoMessage(from_id, message)
     sm.memoMessage(from_id, resp)
