@@ -1,4 +1,3 @@
-import emoji
 from .base import acceptingTextInput, acceptingWrappedKeyboardInput, stateInterface, justSendMessage, acceptingSubsequentTextInput
 from .userInfo import acceptingUserInfo
 from static.condition import conditions, document_parts
