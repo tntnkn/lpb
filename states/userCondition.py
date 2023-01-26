@@ -1,3 +1,4 @@
+import emoji
 from .base import acceptingTextInput, acceptingWrappedKeyboardInput, stateInterface, justSendMessage, acceptingSubsequentTextInput
 from .userInfo import acceptingUserInfo
 from static.condition import conditions, document_parts
@@ -59,11 +60,11 @@ class gettingUserConditions(acceptingWrappedKeyboardInput):
             tags = document_parts[choise]["tags"] 
             for tag in tags:
                 doc_dict[tag] = False
-             
+            
     def getEmoji(self, choise):
         c = vars(self.context.user_condition)[choise]
         if c:
-            return '\/'
+            return "🟡"
         return ''
 
     async def manageDocParts(self, choise):
