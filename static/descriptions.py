@@ -8,7 +8,7 @@ user            = "Информация об истце"
 user_name       = "ФИО истца"
 user_birthdate  = "Дата рождения истца"
 user_birthplace = "Место рождения истца"
-user_address    = "Адрес истца"
+user_address    = "Адрес истца (с индексом)"
 user_phone      = "Номер телефона истца"
 user_email      = "Электронная почта истца"
 
